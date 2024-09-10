@@ -10,10 +10,10 @@ from app.service.file_service import FileService
 from app.schema.file_schema import FileCreate, FileUpdate, FileDelete
 from app.core.redis import redis_client
 
-from  app.celery_task.tasks import savefile2redis, test_task
+from app.celery_task.tasks import savefile2redis, test_task
 
 file_api = Blueprint('file_api', __name__)
-FILEPATH = "static/uploadfile/"
+FILEPATH = "app/static/uploadfile/"
 
 
 class FileApi:
@@ -60,7 +60,7 @@ class FileApi:
             # --异步 filename s deadline
             # redis_client.set(filename, s)
             # redis_client.expire(filename, 3600)
-            savefile2redis.apply_async(args=[filename, s])
+            savefile2redis.delay(filename, s)
             # print(time.time() - start_time)
 
             data = {

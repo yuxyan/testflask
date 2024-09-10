@@ -26,4 +26,6 @@ EXPOSE 5000
 WORKDIR /app
 
 #
+CMD ["celery", "-A", "celery_task", "worker", "-l", "info"]
 CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]
+

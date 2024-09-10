@@ -7,7 +7,6 @@ import time
 def test_task():
     a = 1
     b = 2
-    print(a+b)
     return a+b
 
 
@@ -15,6 +14,5 @@ def test_task():
 def savefile2redis(filename, s, deadline=3600):
     # time.sleep(10)
     redis_client.set(filename, s)
-    print("wdazxzxzxzx")
     redis_client.expire(filename, deadline)
     return filename
