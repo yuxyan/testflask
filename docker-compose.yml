@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  webapp:
+    build: .
+    ports:
+      - "5000:5000"
+    image: "flask-app-redis-celery-rabbitmq"
+    networks:
+      test_network:
+        - ipv4_address: 172.17.0.5
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+
+  mysql:
+    ports:
+      - "3306:3306"
+    image: "mysql"
+    networks:
+      test_network:
+        - ipv4_address: 172.17.0.2
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+
+  redis:
+    ports:
+      - "6379:6379"
+    image: "redis"
+    networks:
+      test_network:
+        - ipv4_address: 172.17.0.3
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    image: "rabbitmq"
+    networks:
+      test_network:
+        - ipv4_address: 172.17.0.4
+
+networks:
+  test_network:
+    driver: bridge
+    external: true
+    ipam:
+      config:
+        - subnet: 172.17.0.0/24
